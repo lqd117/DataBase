@@ -28,7 +28,7 @@ class System_log(models.Model):
     # 操作内容，最大长度100
     log_content = models.CharField(max_length=100)
     # IP地址
-    log_ip = models.IPAddressField()
+    log_ip = models.GenericIPAddressField()
 
 # 申报人信息
 class Reporter_information(models.Model):
