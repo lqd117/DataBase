@@ -24,7 +24,9 @@ def do_login(request):
     if db_info.__len__()==0:
         return render(request,'research/index.html',{'password_is_wrong':True})
     elif db_info[0].user_password == password:
+
         return redirect(reverse('research:home'))
+        return render(request,'research/home.html',{user_id})
     else:
         return render(request, 'research/index.html', {'password_is_wrong': True})
 
