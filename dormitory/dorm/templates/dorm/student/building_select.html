@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    </head>
+    <body bgcolor="lightblue" >
+        <h3>所有楼栋</h3>
+        <p>{{user_id}}</p>
+        {% for building in building_set %}
+        <a href="{% url 'dorm:student_building' %}?buildingid={{building.name}}&user_id={{user_id}}" >{{ building.name }}</a><br />
+        {% endfor %}
+        <a href="{% url 'dorm:student_index' %}?user_id={{user_id}}" >返回</a>
+    </body>
+</html>
