@@ -10,7 +10,6 @@ from .models import *
 def user_login(request):
     return render(request, 'dorm/login.html')
 
-
 def confirm(request):
     if request.method == 'GET':
         return render(request, 'dorm/login.html')
@@ -47,13 +46,11 @@ def student_index(request):
                'housemaster_set': housemaster_set}
     return render(request, 'dorm/student/index.html', content)
 
-
 def student_mark(request):
     user_id = request.GET['user_id']
     student = Student.objects.get(pk=user_id)
     mark_set = Mark.objects.filter(roomid=student.roomid).order_by('dt')
     return render(request, 'dorm/student/mark.html', {'user_id': user_id, 'student': student, 'mark_set': mark_set})
-
 
 def student_fee(request):
     user_id = request.GET['user_id']
@@ -62,11 +59,9 @@ def student_fee(request):
     return render(request, 'dorm/student/fee.html',
                   {'user_id': user_id, 'student': student, 'fee_record_set': fee_record_set})
 
-
 def student_unsubscribe(request):
     user_id = request.GET['user_id']
     return render(request, 'dorm/student/unsubscribe.html', {'user_id': user_id})
-
 
 def student_repair_record(request):
     user_id = request.GET['user_id']
@@ -75,12 +70,10 @@ def student_repair_record(request):
     return render(request, 'dorm/student/repair_record.html',
                   {'user_id': user_id, 'student': student, 'repair_set': repair_set})
 
-
 def student_building_select(request):
     user_id = request.GET['user_id']
     building_set = Building.objects.all()
     return render(request, 'dorm/student/building_select.html', {'user_id': user_id, 'building_set': building_set})
-
 
 def student_unsubscribe_result(request):
     user_id = request.GET['user_id']
@@ -89,11 +82,9 @@ def student_unsubscribe_result(request):
     rec.save()
     return render(request, 'dorm/student/unsubscribe_result.html', {'user_id': user_id})
 
-
 def student_repair(request):
     user_id = request.GET['user_id']
     return render(request, 'dorm/student/repair.html', {'user_id': user_id})
-
 
 def student_new_repair(request):
     user_id = request.GET['user_id']
@@ -102,7 +93,6 @@ def student_new_repair(request):
                  reason=request.POST['reason'])
     rep.save()
     return render(request, 'dorm/student/new_repair.html', {'user_id': user_id})
-
 
 def student_building(request):
     user_id = request.GET['user_id']
@@ -135,7 +125,6 @@ def student_building(request):
                   {'user_id': user_id, 'building': building, 'housemaster_set': housemaster_set, 'empty': empty,
                    'full': full, 'not_full': building.amount - empty - full, 'room_tab': room_tab})
 
-
 def student_checkin(request):
     roomid = request.GET['roomid']
     room = Room.objects.get(pk=roomid)
@@ -153,7 +142,6 @@ def instructor_index(request):
     return render(request, 'dorm/instructor/index.html',
                   {'user_id': user_id, 'instructor': instructor, 'class_set': class_set})
 
-
 def instructor_class(request):
     user_id = request.GET['user_id']
     classid = request.GET['classid']
@@ -161,18 +149,17 @@ def instructor_class(request):
     building_set = set()
     room_set = set()
     for student in student_set:
-        room_set.add(student.roomid)
-        building_set.add(student.roomid.buildingid)
+        if student.roomid != None:
+            room_set.add(student.roomid)
+            building_set.add(student.roomid.buildingid)
     return render(request, 'dorm/instructor/class.html',
                   {'user_id': user_id, 'classname': classid, 'student_set': student_set,
                    'student_amount': len(student_set),
                    'building_amount': len(building_set), 'room_amount': len(room_set)})
 
-
 def instructor_lookup(request):
     user_id = request.GET['user_id']
     return render(request, 'dorm/instructor/lookup.html', {'user_id': user_id})
-
 
 def instructor_checkin(request):
     user_id = request.GET['user_id']
@@ -186,7 +173,6 @@ def instructor_checkin(request):
             rec_set.add(rec)
     return render(request, 'dorm/instructor/checkin.html', {'user_id': user_id, 'rec_set': rec_set})
 
-
 def instructor_unsubscribe(request):
     user_id = request.GET['user_id']
     instructor = Instructor.objects.get(pk=user_id)
@@ -199,7 +185,6 @@ def instructor_unsubscribe(request):
             rec_set.add(rec)
     return render(request, 'dorm/instructor/unsubscribe.html', {'user_id': user_id, 'rec_set': rec_set})
 
-
 def instructor_member(request):
     user_id = request.GET['user_id']
     sno = request.GET['sno']
@@ -208,12 +193,10 @@ def instructor_member(request):
     return render(request, 'dorm/instructor/member.html',
                   {'user_id': user_id, 'room': student.roomid, 'student_set': student_set, 'classid': student.classid})
 
-
 def instructor_lookup_result(request):
     user_id = request.GET['user_id']
     student_set = Student.objects.filter(name=request.POST['name'])
     return render(request, 'dorm/instructor/lookup_result.html', {'user_id': user_id, 'student_set': student_set})
-
 
 def instructor_checkin_result(request):
     user_id = request.GET['user_id']
@@ -226,7 +209,6 @@ def instructor_checkin_result(request):
             live_record.save()
             rec.delete()
     return render(request, 'dorm/instructor/checkin_result.html', {'user_id': user_id})
-
 
 def instructor_unsubscribe_result(request):
     user_id = request.GET['user_id']
@@ -254,13 +236,11 @@ def maintenance_index(request):
     return render(request, 'dorm/maintenance/index.html',
                   {'user_id': user_id, 'fixed_list': fixed_list, 'unfixed_list': unfixed_list})
 
-
 def maintenance_repair(request):
     user_id = request.GET['user_id']
     repairid = request.GET['repairid']
     repair = Repair.objects.get(pk=repairid)
     return render(request, 'dorm/maintenance/repair.html', {'user_id': user_id, 'repair': repair})
-
 
 def maintenance_repair_result(request):
     user_id = request.GET['user_id']
@@ -278,7 +258,6 @@ def housemaster_add_visitor(request):
     user_id = request.GET['user_id']
     return render(request, 'dorm/housemaster/add_visitor.html', {'user_id': user_id})
 
-
 def housemaster_new_visitor(request):
     user_id = request.GET['user_id']
     housemaster = Housemaster.objects.get(pk=user_id)
@@ -287,7 +266,6 @@ def housemaster_new_visitor(request):
                       housemasterid=housemaster)
     visitor.save()
     return render(request, 'dorm/housemaster/new_visitor.html', {'user_id': user_id})
-
 
 def housemaster_building(request):
     class RoomItem(object):
@@ -320,7 +298,6 @@ def housemaster_building(request):
                    'full': full,
                    'not_full': building.amount - empty - full, 'room_tab': room_tab})
 
-
 def housemaster_checkin(request):
     user_id = request.GET['user_id']
     housemaster = Housemaster.objects.get(pk=user_id)
@@ -334,7 +311,6 @@ def housemaster_checkin(request):
             rec_set.add(rec)
     return render(request, 'dorm/housemaster/checkin.html', {'user_id': user_id, 'rec_set': rec_set})
 
-
 def housemaster_checkin_result(request):
     user_id = request.GET['user_id']
     for id in request.POST.getlist('checked'):
@@ -346,7 +322,6 @@ def housemaster_checkin_result(request):
             live_record.save()
             rec.delete()
     return render(request, 'dorm/housemaster/checkin_result.html', {'user_id': user_id})
-
 
 def housemaster_index(request):
     user_id = request.GET['user_id']
@@ -364,17 +339,14 @@ def housemaster_index(request):
                    'housemaster_set': housemaster_set, 'empty': empty,
                    'full': full, 'not_full': building.amount - empty - full})
 
-
 def housemaster_lookup(request):
     user_id = request.GET['user_id']
     return render(request, 'dorm/housemaster/lookup.html', {'user_id': user_id})
-
 
 def housemaster_lookup_result(request):
     user_id = request.GET['user_id']
     student_set = Student.objects.filter(name=request.POST['name'])
     return render(request, 'dorm/housemaster/lookup_result.html', {'user_id': user_id, 'student_set': student_set})
-
 
 def housemaster_member(request):
     user_id = request.GET['user_id']
@@ -383,7 +355,6 @@ def housemaster_member(request):
     student_set = Student.objects.filter(roomid=room)
     return render(request, 'dorm/housemaster/member.html',
                   {'user_id': user_id, 'room': room, 'student_set': student_set})
-
 
 def housemaster_unsubscribe(request):
     user_id = request.GET['user_id']
@@ -398,7 +369,6 @@ def housemaster_unsubscribe(request):
             rec_set.add(rec)
     return render(request, 'dorm/housemaster/unsubscribe.html', {'user_id': user_id, 'rec_set': rec_set})
 
-
 def housemaster_unsubscribe_result(request):
     user_id = request.GET['user_id']
     for id in request.POST.getlist('checked'):
@@ -412,7 +382,6 @@ def housemaster_unsubscribe_result(request):
             rec.delete()
     return render(request, 'dorm/housemaster/unsubscribe_result.html', {'user_id': user_id})
 
-
 def housemaster_visitor(request):
     user_id = request.GET['user_id']
     housemaster = Housemaster.objects.get(pk=user_id)
@@ -421,11 +390,9 @@ def housemaster_visitor(request):
     return render(request, 'dorm/housemaster/visitor.html',
                   {'user_id': user_id, 'building': building, 'visitor_set': visitor_set})
 
-
 def housemaster_mark(request):
     user_id = request.GET['user_id']
     return render(request, 'dorm/housemaster/mark.html', {'user_id': user_id})
-
 
 def housemaster_new_mark(request):
     user_id = request.GET['user_id']
@@ -441,7 +408,6 @@ def secretary_building(request):
     user_id = request.GET['user_id']
     return render(request, 'dorm/secretary/building.html', {'user_id': user_id})
 
-
 def secretary_checkin(request):
     user_id = request.GET['user_id']
     secretary = Secretary.objects.get(pk=user_id)
@@ -453,7 +419,6 @@ def secretary_checkin(request):
                 rec.occupant += 1
             rec_set.add(rec)
     return render(request, 'dorm/secretary/checkin.html', {'user_id': user_id, 'rec_set': rec_set})
-
 
 def secretary_checkin_result(request):
     user_id = request.GET['user_id']
@@ -475,8 +440,9 @@ def secretary_class(request):
     building_set = set()
     room_set = set()
     for student in student_set:
-        room_set.add(student.roomid)
-        building_set.add(student.roomid.buildingid)
+        if student.roomid != None:
+            room_set.add(student.roomid)
+            building_set.add(student.roomid.buildingid)
     return render(request, 'dorm/secretary/class.html',
                   {'user_id':user_id,'cls': cls, 'student_set': student_set, 'student_amount': len(student_set),
                    'building_amount': len(building_set), 'room_amount': len(room_set)})
@@ -537,3 +503,50 @@ def secretary_unsubscribe_result(request):
             live_record.save()
             rec.delete()
     return render(request, 'dorm/secretary/unsubscribe_result.html', {'user_id': user_id})
+
+def secretary_distribute(request):
+    user_id = request.GET['user_id']
+    secretary = Secretary.objects.get(pk=user_id)
+    student_set = set()
+    for temp in Student.objects.all():
+        if temp.collegeid == secretary.collegeid:
+            student_set.add(temp)
+    return render(request, 'dorm/secretary/distribute.html',{'user_id':user_id,'student_set':student_set})
+
+def secretary_distribute_clear(request):
+    user_id = request.GET['user_id']
+    secretary = Secretary.objects.get(pk=user_id)
+    for temp in Student.objects.all():
+        if temp.collegeid == secretary.collegeid:
+            print(temp.sno_id,temp.buildingid,temp.roomid)
+            if temp.roomid != None:
+                Room.objects.filter(pk=temp.roomid).update(capacity= temp.roomid.capacity + 1)
+            Student.objects.filter(pk=temp.sno_id).update(buildingid = None,roomid = None)
+            print(temp.sno_id,temp.buildingid,temp.roomid)
+    return render(request, 'dorm/secretary/distribute_clear.html',{'user_id':user_id})
+
+def secretary_distribute_result(request):
+    user_id = request.GET['user_id']
+    secretary = Secretary.objects.get(pk=user_id)
+    buildingid = request.POST['building']
+    sex = request.POST['sex']
+    sex = True if sex == '1' else False
+    temp_arr = []
+    for temp in Student.objects.all():
+        if temp.collegeid == secretary.collegeid and temp.sex == sex:
+            temp_arr.append(temp.sno_id)
+    id = 0
+    for temp in Room.objects.all():
+        if id >= temp_arr.__len__():
+            break
+        if str(temp.buildingid) == str(buildingid):
+            cnt = temp.capacity
+            while cnt != 0:
+                if id < temp_arr.__len__():
+                    Student.objects.filter(pk=temp_arr[id]).update(buildingid_id = buildingid,roomid = temp)
+                    cnt -= 1
+                    id += 1
+                    print(cnt)
+            Room.objects.filter(pk=temp.name).update(capacity = cnt)
+
+    return render(request, 'dorm/secretary/distribute_result.html',{'user_id':user_id})

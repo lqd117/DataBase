@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+
+<body bgcolor="lightblue">
+
+<form  action="{% url 'dorm:secretary_distribute_clear' %}?user_id={{user_id}}" method="post">
+    {% csrf_token %}
+    <p>是否清空{{collegeid.name}}专业所有学生住宿信息：
+        <input type="submit" id="temp" class="btnSub" value="确定"
+           style="font-size: 16px;font-weight: bold;font-family: 微软雅黑;"/>
+    </p>
+</form>
+<p>统一分配{{collegeid.name}}专业的学生，系统自动从低层到高层分配</p>
+<form class="" action="{% url 'dorm:secretary_distribute_result' %}?user_id={{user_id}}" method="post">
+    {% csrf_token %}
+    <p>选择公寓：
+    <select name="building">
+        <option value="樱花苑1号楼">樱花苑1号楼</option>
+        <option value="樱花苑2号楼">樱花苑2号楼</option>
+        <option value="樱花苑3号楼">樱花苑3号楼</option>
+        <option value="樱花苑4号楼">樱花苑4号楼</option>
+        <option value="樱花苑5号楼">樱花苑5号楼</option>
+        <option value="樱花苑6号楼">樱花苑6号楼</option>
+        <option value="樱花苑7号楼">樱花苑7号楼</option>
+    </select>
+    </p>
+
+    <p>选择性别：
+    <select name="sex">
+        <option value="1">男</option>
+        <option value="0">女</option>
+    </select>
+    </p>
+    <input type="submit" id="loginBtn" class="btnSub" value="确定"
+           style="font-size: 16px;font-weight: bold;font-family: 微软雅黑;"/>
+</form>
+<br>
+<a href="{% url 'dorm:secretary_index' %}?user_id={{user_id}}" >返回</a>
+
+<table border="1">
+    <tr>
+        <th>学号</th>
+        <th>姓名</th>
+        <th>班级</th>
+        <th>性别</th>
+        <th>联系方式</th>
+        <th>公寓号</th>
+        <th>寝室号</th>
+    </tr>
+    {% for student in student_set %}
+    <tr>
+        <td>{{ student.sno_id }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.classid.name }}</td>
+        <td>{% if student.sex %}男{% else %}女{% endif %}</td>
+        <td>{{ student.contact }}</td>
+        <td>{{ student.buildingid }}</td>
+        <td>{{ student.roomid }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

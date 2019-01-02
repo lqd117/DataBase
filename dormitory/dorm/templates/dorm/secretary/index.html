@@ -1,16 +1,36 @@
 <html>
     <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     </head>
-    <body bgcolor="lightblue" >
-        <p>{{ secretary.collegeid.name }}{{ secretary.name }}书记，你好</p>
-        <p>你院有{{ class_amount }}个班级，共{{ student_amount }}名学生</p>
-        {% for cls in class_set %}
-        <a href="{% url 'dorm:secretary_class' %}?user_id={{user_id}}&classid={{cls.name}}" >{{ cls.name }}</a><br />
-        {% endfor %}
-        <a href="{% url 'dorm:secretary_lookup' %}?user_id={{user_id}}" >查询学生信息</a><br />
-        <a href="{% url 'dorm:secretary_checkin' %}?user_id={{user_id}}" >入住审核</a><br />
-        <a href="{% url 'dorm:secretary_unsubscribe' %}?user_id={{user_id}}" >退宿审核</a><br />
-        <a href="{% url 'dorm:user_login' %}" >注销</a><br />
+    <body style="background-color: lightblue" >
+        <div class="container">
+            <div class="row clearfix" style="height: 10%;">
+                <div class="col-md-6 column">
+                    <p>{{ secretary.collegeid.name }}{{ secretary.name }}书记，你好</p>
+                    <p>你院有{{ class_amount }}个班级，共{{ student_amount }}名学生</p>
+                </div>
+                <div class="col-md-6 column">
+                    <a href="{% url 'dorm:user_login' %}" >注销</a><br />
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-4 column" style="width: 10%">
+                    {% for cls in class_set %}
+                    <a href="{% url 'dorm:secretary_class' %}?user_id={{user_id}}&classid={{cls.name}}" target="iframe_a">{{ cls.name }}</a><br />
+                    {% endfor %}
+                    <a href="{% url 'dorm:secretary_lookup' %}?user_id={{user_id}}" target="iframe_a">查询学生信息</a><br />
+                    <a href="{% url 'dorm:secretary_checkin' %}?user_id={{user_id}}" target="iframe_a">入住审核</a><br />
+                    <a href="{% url 'dorm:secretary_unsubscribe' %}?user_id={{user_id}}" target="iframe_a">退宿审核</a><br />
+                    <a href="{% url 'dorm:secretary_distribute' %}?user_id={{user_id}}" target="iframe_a">分配寝室</a><br />
+                </div>
+                <div class="col-md-8 column">
+                    <iframe src="" name="iframe_a" style="height: 700px;width: 1000px"></iframe>
+                </div>
+            </div>
+        </div>
+
+
+
     </body>
 </html>

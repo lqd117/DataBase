@@ -58,5 +58,8 @@ urlpatterns = [
     path('secretary/member.html/',views.secretary_member,name='secretary_member'),
     path('secretary/unsubscribe.html/',views.secretary_unsubscribe,name='secretary_unsubscribe'),
     path('secretary/unsubscribe_result.html/',views.secretary_unsubscribe_result,name='secretary_unsubscribe_result'),
+    path('secretary/distribute.html/',views.secretary_distribute,name='secretary_distribute'),
+    path('secretary/distribute_clear.html/',views.secretary_distribute_clear,name='secretary_distribute_clear'),
+    path('secretary/distribute_result.html/',views.secretary_distribute_result,name='secretary_distribute_result'),
 
 ]
