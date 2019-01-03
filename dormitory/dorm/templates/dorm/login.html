@@ -14,7 +14,7 @@
             <img src="{% static 'dorm/images/log04.png' %}" width="278" height="49" />
         </div>
     	<div class="nav_right">
-        	<em class="yj5" onclick="AddFavorite(window.location,document.title)"> 收藏</em>
+
         </div>
     </div>
 </div>
@@ -63,16 +63,5 @@ $(document).ready(function(){
 		}
 	});
 });
-function AddFavorite(sURL, sTitle) {
-	try {
-		window.external.addFavorite(sURL, sTitle);
-	} catch (e) {
-		try {
-			window.sidebar.addPanel(sTitle, sURL, "");
-		} catch (e) {
-			alert("加入收藏失败，请使用Ctrl+D进行添加");
-		}
-	}
-}
 </script>
 </html>

@@ -34,10 +34,12 @@ def confirm(request):
 def student_index(request):
     user_id = request.GET['user_id']
     student = Student.objects.get(pk=user_id)
-    fee = Fee.objects.get(pk=student.roomid)
-    mark = Mark.objects.filter(roomid=student.roomid).order_by('-dt')[0]
+    fee,mark,housemaster_set = None, None, None
+    if student.roomid != None:
+        fee = Fee.objects.get(pk=student.roomid)
+        mark = Mark.objects.filter(roomid=student.roomid).order_by('-dt')[0]
+        housemaster_set = Housemaster.objects.filter(buildingid=student.roomid.buildingid)
     secretary_set = Secretary.objects.filter(collegeid=student.classid.collegeid)
-    housemaster_set = Housemaster.objects.filter(buildingid=student.roomid.buildingid)
     content = {'student': student,
                'user_id': user_id,
                'fee': fee,
@@ -429,6 +431,8 @@ def secretary_checkin_result(request):
         if rec.housemaster_check and rec.instructor_check:
             live_record = LiveRecord(sno=rec.sno, roomid=rec.roomid, enter_time=timezone.now(), quit_time=None)
             live_record.save()
+            Student.objects.filter(pk=rec.sno).update(roomid=rec.roomid,buildingid=rec.roomid.buildingid)
+            Room.objects.filter(pk=rec.roomid).update(capacity=rec.roomid.capacity - 1)
             rec.delete()
     return render(request, 'dorm/secretary/checkin_result.html', {'user_id': user_id})
 
@@ -501,6 +505,8 @@ def secretary_unsubscribe_result(request):
             live_record = LiveRecord.objects.filter(sno=rec.sno, roomid=rec.roomid).order_by('-enter_time')[0]
             live_record.quit_time = timezone.now()
             live_record.save()
+            Student.objects.filter(pk=rec.sno_id).update(roomid=None, buildingid=None)
+            Room.objects.filter(pk=rec.roomid).update(capacity=rec.roomid.capacity + 1)
             rec.delete()
     return render(request, 'dorm/secretary/unsubscribe_result.html', {'user_id': user_id})
 
