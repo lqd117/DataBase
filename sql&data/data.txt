@@ -1,0 +1,86 @@
+use dorm;
+DELIMITER $$
+ DROP PROCEDURE IF EXISTS test_mysql_while_loop$$
+ CREATE PROCEDURE test_mysql_while_loop()
+ BEGIN
+ DECLARE x  INT;
+ DECLARE str  VARCHAR(255);
+ 
+ SET x = 2;
+ 
+ WHILE x  <= 200 DO
+ SET  str = CONCAT(x,'号','');
+ insert into dorm_owner values(x,str,x,'学生');
+ SET  x = x + 1; 
+ END WHILE;
+ 
+ SELECT str;
+ END$$
+DELIMITER ;
+CALL test_mysql_while_loop();
+
+
+
+
+
+use dorm;
+DELIMITER $$
+ DROP PROCEDURE IF EXISTS test_mysql_while_loop$$
+ CREATE PROCEDURE test_mysql_while_loop()
+ BEGIN
+ DECLARE x  INT;
+ DECLARE str  VARCHAR(255);
+ declare class varchar(255);
+ declare tmp int;
+ declare tmp1 boolean;
+ SET x = 2;
+ 
+ WHILE x  <= 200 DO
+ SET  str = CONCAT(x,'号','');
+ set tmp = x/50+1;
+ set class = concat('计科-160',tmp,'');
+ select class;
+ if x%2=1 then
+	set tmp1 = false;
+ else
+	set tmp1 = True;
+ end if;
+ 
+ insert into dorm_student (sno_id,name,sex,contact,classid_id,roomid_id,buildingid_id,collegeid_id,nation)
+ values(x,str,tmp1,null,class,null,null,'计算机科学与技术','汉族');
+ SET  x = x + 1; 
+ END WHILE;
+ 
+ SELECT str;
+ END$$
+DELIMITER ;
+CALL test_mysql_while_loop();
+
+
+
+
+use dorm;
+DELIMITER $$
+ DROP PROCEDURE IF EXISTS test_mysql_while_loop$$
+ CREATE PROCEDURE test_mysql_while_loop()
+ BEGIN
+ DECLARE x  INT;
+ DECLARE str  VARCHAR(255);
+ declare class varchar(255);
+ declare tmp int;
+ declare tmp1 boolean;
+ SET x = 100;
+ 
+ WHILE x  < 1000 DO
+ SET  str = CONCAT('2-',x,'');
+ 
+ insert into dorm_room 
+ values(str,'4人间',4,'樱花苑2号楼',null,'800');
+ SET  x = x + 1; 
+ END WHILE;
+ 
+ SELECT str;
+ END$$
+DELIMITER ;
+CALL test_mysql_while_loop();
+
